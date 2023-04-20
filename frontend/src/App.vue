@@ -21,6 +21,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh; /* Add this line */
+  display: flex; /* Add this line */
+  flex-direction: column; /* Add this line */
 }
 
 nav {
@@ -34,5 +37,10 @@ nav {
       color: #42b983;
     }
   }
+}
+
+/* Add the following style to stretch the footer to the bottom of the page */
+#app > .flex-grow-1 {
+  flex-grow: 1;
 }
 </style>
