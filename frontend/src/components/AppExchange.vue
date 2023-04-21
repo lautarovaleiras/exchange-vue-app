@@ -27,6 +27,9 @@
               <b-button type="submit" variant="primary" :disabled="!isFormValid">Convert</b-button>
             </b-form>
           </div>
+          <div class="spinner" v-if="isLoading">
+            <b-spinner  variant="primary" label="Spinning"></b-spinner>
+          </div>
 
           <div v-show="amountConverted !== null" class="card-footer bg-light">
             <p class="mb-0">Result:</p>
@@ -66,11 +69,13 @@ export default {
       selectedFrom: 'ARS',
       selectedTo: 'USD',
       options: [],
-      amountConverted: null
+      amountConverted: null,
+      isLoading: false
     }
   },
   methods: {
     async doFetch () {
+      this.isLoading = true
       try {
         const body = {
           from: this.selectedFrom,
@@ -82,6 +87,8 @@ export default {
         this.amountConverted = amount ? amount.toFixed(3) : 'Sin datos'
       } catch (error) {
         console.error(error)
+      } finally {
+        this.isLoading = false
       }
     },
     submitForm (event) {
@@ -131,4 +138,11 @@ li {
 a {
   color: #42b983;
 }
+
+.spinner{
+  justify-content: center;
+  padding: 1rem;
+  display: flex;
+}
+
 </style>

@@ -10,7 +10,11 @@
                 <b-form-input id="email" placeholder="Enter your email"  v-model="email" type="email" required autofocus></b-form-input>
               </b-form-group>
 
-              <b-button type="submit" variant="primary" block>Login</b-button>
+              <div class="spinner" v-if="isLoading">
+                <b-spinner  variant="primary" label="Spinning"></b-spinner>
+              </div>
+
+              <b-button v-show="!isLoading" type="submit" variant="primary" block>Login</b-button>
             </b-form>
           </div>
         </div>
@@ -28,28 +32,42 @@ export default {
   data () {
     return {
       email: '',
-      isLoggingIn: false // Add a flag to track login state
-
+      isLoading: false
     }
   },
   methods: {
     ...mapMutations(['setAuthState']),
 
     async signIn (e) {
+      this.isLoading = true
       e.preventDefault()
-      const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: this.email
+      try {
+        const response = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: this.email
+          })
         })
-      })
-      const res = await response.json()
-      this.setAuthState({ isAuthenticated: true, token: res.token, user: jwtDecode(res.token).email })
-      this.$router.push('/')
+        const res = await response.json()
+        this.setAuthState({ isAuthenticated: true, token: res.token, user: jwtDecode(res.token).email })
+        this.$router.push('/')
+      } catch (error) {
+
+      } finally {
+        this.isLoading = false
+      }
     }
   }
 }
 </script>
+<style>
+.spinner{
+  justify-content: center;
+  padding: 1rem;
+  display: flex;
+}
+
+</style>
