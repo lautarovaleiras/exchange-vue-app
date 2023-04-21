@@ -12,5 +12,11 @@
             "src": "/(.*)",
             "dest": "dist/index.js"
         }
-    ]
+    ],
+    "functions": {
+        "api/index.js": {
+          "runtime": "@vercel/node@16",
+          "memory": 512
+        }
+      }
 }
