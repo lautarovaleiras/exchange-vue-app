@@ -14,11 +14,8 @@ export default {
 <style>
 footer {
   box-sizing: border-box;
-  background-color: #cfd8dc;
   bottom: 0;
   left: 0;
-  padding: 1rem;
-  position: absolute;
   width: 100%;
   display: flex;
   justify-content: space-between; /* Use space-between to align spans at the beginning, center, and end */

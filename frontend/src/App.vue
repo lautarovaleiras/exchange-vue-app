@@ -1,8 +1,17 @@
 <template>
-  <div id="app">
-    <app-header></app-header>
-    <router-view/>
-    <app-footer></app-footer>
+  <div class="wrapper">
+    <header class="header">
+      <!-- Header content goes here -->
+      <app-header></app-header> <!-- Replace with your header component -->
+    </header>
+    <main class="main">
+      <!-- Main content goes here -->
+      <router-view></router-view> <!-- Replace with your main component or router-view -->
+    </main>
+    <footer class="footer">
+      <!-- Footer content goes here -->
+      <app-footer></app-footer> <!-- Replace with your footer component -->
+    </footer>
   </div>
 </template>
 <script>
@@ -14,33 +23,32 @@ export default {
 }
 
 </script>
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  min-height: 100vh; /* Add this line */
-  display: flex; /* Add this line */
-  flex-direction: column; /* Add this line */
+<style scoped>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.header {
+  background-color: #f0f0f0;
 }
 
-/* Add the following style to stretch the footer to the bottom of the page */
-#app > .flex-grow-1 {
+.main {
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  background-image: url("./assets/background-img.jpg");
+  background-size: cover; /* Use 'contain' to fit the image within the element */
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
   flex-grow: 1;
+  padding: 1rem;
+}
+
+.footer {
+  background-color: #f0f0f0;
+  padding: 1rem;
 }
 </style>
