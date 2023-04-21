@@ -24,7 +24,7 @@
                 </b-form-invalid-feedback>
               </b-input-group>
               <br>
-              <b-button type="submit" variant="primary">Convert</b-button>
+              <b-button type="submit" variant="primary" :disabled="!isFormValid">Convert</b-button>
             </b-form>
           </div>
 
@@ -42,6 +42,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+import { isEmpty } from 'lodash'
 
 export default {
   name: 'AppExchange',
@@ -49,8 +50,11 @@ export default {
     ...mapGetters(['isAuthenticated', 'getToken']),
     amountState () {
       const regex = /[^0-9.]/g // Removed unnecessary quotes around the regex pattern
-      const isValid = !regex.test(this.amountValue) // Changed "event" to "this.event" and inverted the result
-      return isValid
+      const isValid = !regex.test(this.amountValue)
+      return isValid && !isEmpty(this.amountValue)
+    },
+    isFormValid () {
+      return this.amountState && this.selectedFrom && this.selectedTo
     }
   },
   props: {
@@ -75,7 +79,7 @@ export default {
         }
         const response = await axios.post('http://localhost:3000/exchange/convert', body)
         const amount = response.data?.amountConverted
-        this.amountConverted = amount ? amount.toFixed(2) : 'Sin datos'
+        this.amountConverted = amount ? amount.toFixed(3) : 'Sin datos'
       } catch (error) {
         console.error(error)
       }

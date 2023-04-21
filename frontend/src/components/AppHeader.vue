@@ -43,7 +43,13 @@ export default {
       this.$router.push('/login')
     },
     singOut () {
-      this.logout.then(() => this.redirectToLogin())
+      this.$store.dispatch('logout') // Dispatch the logout action
+        .then(() => {
+          return this.$router.push('/login')
+        })
+        .catch((error) => {
+          console.error('Failed to logout:', error)
+        })
     }
   }
 }
