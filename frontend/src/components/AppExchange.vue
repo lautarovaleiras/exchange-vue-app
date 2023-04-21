@@ -34,6 +34,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 export default {
   name: 'AppExchange',
   computed: { ...mapGetters(['isAuthenticated', 'getToken']) },
@@ -58,16 +59,8 @@ export default {
           to: this.selectedTo,
           amount: Number(this.amountValue)
         }
-        const headers = {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.getToken // Add the JWT token to the Authorization header
-        }
-        const response = await fetch('http://localhost:3000/exchange/convert', {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify(body)
-        })
-        const data = await response.json()
+        const response = await axios.post('http://localhost:3000/exchange/convert', body)
+        const data = response.data
         this.amountConverted = data?.amountConverted || 'no hay datos'
         console.log(data)
       } catch (error) {
@@ -83,20 +76,17 @@ export default {
     console.log(this.getToken)
     console.log(this.isAuthenticated)
 
-    fetch('http://localhost:3000/exchange/currencies', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.getToken // Add the JWT token to the Authorization header
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.options = data.map(c => {
+    axios.get('http://localhost:3000/exchange/currencies')
+      .then(res => {
+        this.options = res.data?.map(c => {
           return {
             value: c.currencyISO,
             text: `${c.currencyISO} - ${c.CurrencyName}`
           }
         })
+      }).catch(error => {
+        // Handle Error
+        console.error(error)
       })
   }
 }

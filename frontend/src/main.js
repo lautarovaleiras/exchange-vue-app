@@ -5,8 +5,11 @@ import './plugins/bootstrap-vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import jwtInterceptor from './plugins/jwtInterceptor-vue'
 
 Vue.config.productionTip = false
+
+jwtInterceptor(store)
 
 new Vue({
   router,
