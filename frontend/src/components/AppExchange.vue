@@ -60,9 +60,6 @@ export default {
       return this.amountState && this.selectedFrom && this.selectedTo
     }
   },
-  props: {
-    msg: String
-  },
   data () {
     return {
       amountValue: null,

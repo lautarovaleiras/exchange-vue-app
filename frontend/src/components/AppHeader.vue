@@ -8,7 +8,7 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item href="https://github.com/lautarovaleiras/exchange-vue-app">Github source code</b-nav-item>
-        <b-nav-item href="/">Doc</b-nav-item>
+        <b-nav-item @click="redirectTo('/about')">Doc</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -20,7 +20,7 @@
             <em v-if="!isAuthenticated"><b-icon icon="person-circle" font-scale="2"></b-icon></em>
             <em v-if="isAuthenticated">{{getUser}}</em>
           </template>
-          <b-dropdown-item  v-if="!isAuthenticated" @click="redirectToLogin">Sign In</b-dropdown-item>
+          <b-dropdown-item  v-if="!isAuthenticated" @click="redirectTo('/login')">Sign In</b-dropdown-item>
           <b-dropdown-item  v-if="isAuthenticated" @click="singOut">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -39,8 +39,8 @@ export default {
     ...mapActions(['logout'])
   },
   methods: {
-    redirectToLogin () {
-      this.$router.push('/login')
+    redirectTo (path) {
+      this.$router.push(path)
     },
     singOut () {
       this.$store.dispatch('logout') // Dispatch the logout action
