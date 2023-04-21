@@ -8,6 +8,7 @@ import exchangeRoutes from './routes/exchange.routes';
 import authRoutes from './routes/auth.routes';
 
 const PORT = process.env.PORT || 3000;
+const env = process.env.NODE_ENV || 'dev';
 const app = express();
 
 // middlewares
@@ -16,7 +17,7 @@ const corsOptions = {
     origin: 'http://localhost:8080',
   };
 app.use(cors(corsOptions));
-app.use(morgan('dev'));
+app.use(morgan(env));
 
 // para poder interperetar los datos que vienen al servidor en formato json
 app.use(express.json());
@@ -26,5 +27,5 @@ app.use(express.json());
 app.use(exchangeRoutes);
 app.use(authRoutes);
 
-app.listen(3000);
-console.log('Server on Port', PORT); 
+app.listen(PORT);
+console.log('Server on Port', PORT);
