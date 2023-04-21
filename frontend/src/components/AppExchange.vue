@@ -79,7 +79,7 @@ export default {
           to: this.selectedTo,
           amount: Number(this.amountValue)
         }
-        const response = await axios.post('http://localhost:3000/exchange/convert', body)
+        const response = await axios.post(`${process.env.VUE_APP_API_URL}/exchange/convert`, body)
         const amount = response.data?.amountConverted
         this.amountConverted = amount ? amount.toFixed(3) : 'Sin datos'
       } catch (error) {
@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://localhost:3000/exchange/currencies')
+    axios.get(`${process.env.VUE_APP_API_URL}/exchange/currencies`)
       .then(res => {
         this.options = res.data?.map(c => {
           return {
