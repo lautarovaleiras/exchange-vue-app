@@ -6,34 +6,30 @@
           <div class="card-header">Currency convertion</div>
           <div class="card-body">
             <b-form @submit.prevent="submitForm">
-        <b-form-group>
-          <b-form-select  v-model="fromSelected" :options="from">
-          </b-form-select>
-        </b-form-group>
+              <b-form-group>
+                <b-form-select  v-model="selectedFrom" :options="options" required>
+                </b-form-select>
+              </b-form-group>
 
-        <b-form-group>
-          <b-form-select  v-model="toSelected"  :options="to">
-          </b-form-select>
-        </b-form-group>
+              <b-form-group>
+                <b-form-select  v-model="selectedTo"  :options="options" required>
+                </b-form-select>
+              </b-form-group>
 
-        <b-form-group >
-          <b-form-input v-model="inputValue" placeholder="Enter a value"></b-form-input>
-        </b-form-group>
+              <b-form-group>
+                <b-form-input v-model="amountValue" placeholder="$ 0.00" type="number" required></b-form-input>
+              </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
-      </b-form>
+              <b-button type="submit" variant="primary">Convert</b-button>
+            </b-form>
           </div>
+
+          <p v-show="amountConverted !== null">Result: {{ amountConverted }}</p>
         </div>
+
       </div>
     </div>
   </div>
-  <!-- <div class="hello">
-    <h1>{{ msg }}</h1>
-    <b-form-select v-model="selected" :options="options"></b-form-select>
-    <b-button @click="doFetch">Fetch Data</b-button>
-    <p>Response: {{ res }}</p>
-  </div> -->
-
 </template>
 
 <script>
@@ -44,29 +40,49 @@ export default {
   },
   data () {
     return {
-      fromSelected: null,
-      from: [
-        { value: null, text: 'From' }
-      ],
-      toSelected: null,
-      to: [
-        { value: null, text: 'To' }
-      ]
+      amountValue: null,
+      selectedFrom: null,
+      selectedTo: null,
+      options: [],
+      amountConverted: null
     }
   },
   methods: {
     async doFetch () {
       try {
-        const response = await fetch('')
+        const body = {
+          from: this.selectedFrom,
+          to: this.selectedTo,
+          amount: Number(this.amountValue)
+        }
+        const response = await fetch('http://localhost:3000/exchange/convert', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        })
         const data = await response.json()
-        this.res = data
+        this.amountConverted = data?.amountConverted || 'no hay datos'
+        console.log(data)
       } catch (error) {
-        // Log error in Db
+        console.error(error)
       }
+    },
+    submitForm (event) {
+      event.preventDefault()
+      this.doFetch()
     }
   },
   mounted () {
-    console.log('init')
+    fetch('http://localhost:3000/exchange/currencies')
+      .then(response => response.json())
+      .then(data => {
+        this.options = data.map(c => {
+          return {
+            value: c.currencyISO,
+            text: `${c.currencyISO} - ${c.CurrencyName}`
+          }
+        })
+      })
   }
 }
 </script>
