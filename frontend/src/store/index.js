@@ -6,16 +6,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isAuthenticated: false,
-    token: null
+    token: null,
+    user: null
   },
   mutations: {
     setAuthState (state, payload) {
       state.isAuthenticated = payload.isAuthenticated
       state.token = payload.token
+      state.user = payload.user
     },
     clearAuthState (state) {
       state.isAuthenticated = false
       state.token = null
+      state.user = null
     }
   },
   actions: {
@@ -31,6 +34,9 @@ export default new Vuex.Store({
     },
     getToken (state) {
       return state.token
+    },
+    getUser (state) {
+      return state.user
     }
   }
 })

@@ -1,7 +1,9 @@
 <template>
-<footer>
-  <span>@Lautaro Valeiras</span>
-</footer>
+ <footer>
+    <!-- <span class="footer-item center">@Lautaro Valeiras</span> -->
+    <b-link class="footer-item center" href="https://github.com/lautarovaleiras">@Lautaro Valeiras</b-link>
+
+  </footer>
 </template>
 <script>
 export default {
@@ -16,7 +18,17 @@ footer {
   bottom: 0;
   left: 0;
   padding: 1rem;
-  position:  absolute;
+  position: absolute;
   width: 100%;
+  display: flex;
+  justify-content: space-between; /* Use space-between to align spans at the beginning, center, and end */
+}
+
+.footer-item.center {
+  margin: 0 auto; /* Use margin: 0 auto to center align the span in the center */
+}
+
+.footer-item.end {
+  margin-left: auto; /* Use margin-left: auto to push the span to the end */
 }
 </style>

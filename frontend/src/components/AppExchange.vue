@@ -28,7 +28,10 @@
             </b-form>
           </div>
 
-          <p v-show="amountConverted !== null">Result: {{ amountConverted }}</p>
+          <div v-show="amountConverted !== null" class="card-footer bg-light">
+            <p class="mb-0">Result:</p>
+            <h4 class="mb-0">{{ amountConverted }}</h4>
+          </div>
         </div>
 
       </div>
@@ -56,7 +59,7 @@ export default {
   data () {
     return {
       amountValue: null,
-      selectedFrom: null,
+      selectedFrom: 'ARS',
       selectedTo: 'USD',
       options: [],
       amountConverted: null
@@ -71,9 +74,8 @@ export default {
           amount: Number(this.amountValue)
         }
         const response = await axios.post('http://localhost:3000/exchange/convert', body)
-        const data = response.data
-        this.amountConverted = data?.amountConverted || 'no hay datos'
-        console.log(data)
+        const amount = response.data?.amountConverted
+        this.amountConverted = amount ? amount.toFixed(2) : 'Sin datos'
       } catch (error) {
         console.error(error)
       }
