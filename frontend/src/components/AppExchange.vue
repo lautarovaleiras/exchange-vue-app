@@ -58,9 +58,13 @@ export default {
           to: this.selectedTo,
           amount: Number(this.amountValue)
         }
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.getToken // Add the JWT token to the Authorization header
+        }
         const response = await fetch('http://localhost:3000/exchange/convert', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
           body: JSON.stringify(body)
         })
         const data = await response.json()
@@ -79,7 +83,12 @@ export default {
     console.log(this.getToken)
     console.log(this.isAuthenticated)
 
-    fetch('http://localhost:3000/exchange/currencies')
+    fetch('http://localhost:3000/exchange/currencies', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.getToken // Add the JWT token to the Authorization header
+      }
+    })
       .then(response => response.json())
       .then(data => {
         this.options = data.map(c => {
