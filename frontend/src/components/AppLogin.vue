@@ -5,13 +5,9 @@
         <div class="card">
           <div class="card-header">Login</div>
           <div class="card-body">
-            <b-form @submit.prevent="login">
-              <b-form-group id="username-group" label="Username" label-for="username">
-                <b-form-input id="username" v-model="username" type="text" required autofocus></b-form-input>
-              </b-form-group>
-
-              <b-form-group id="password-group" label="Password" label-for="password">
-                <b-form-input id="password" v-model="password" type="password" required></b-form-input>
+            <b-form @submit.prevent="signIn">
+              <b-form-group id="email-group" label="Email" label-for="email">
+                <b-form-input id="email" v-model="email" type="text" required autofocus></b-form-input>
               </b-form-group>
 
               <b-button type="submit" variant="primary" block>Login</b-button>
@@ -24,18 +20,33 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'app-login',
   data () {
     return {
-      username: '',
-      password: ''
+      email: '',
+      isLoggingIn: false // Add a flag to track login state
+
     }
   },
   methods: {
-    login () {
-      // Handle login logic here
-      console.log('Logged in:', this.username)
+    ...mapMutations(['setAuthState']),
+
+    async signIn (e) {
+      e.preventDefault()
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: this.email
+        })
+      })
+      const res = await response.json()
+      this.setAuthState({ isAuthenticated: true, token: res.token })
+      this.$router.push('/')
     }
   }
 }

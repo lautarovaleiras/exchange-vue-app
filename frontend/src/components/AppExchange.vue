@@ -33,8 +33,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'AppExchange',
+  computed: { ...mapGetters(['isAuthenticated', 'getToken']) },
+
   props: {
     msg: String
   },
@@ -73,6 +76,9 @@ export default {
     }
   },
   mounted () {
+    console.log(this.getToken)
+    console.log(this.isAuthenticated)
+
     fetch('http://localhost:3000/exchange/currencies')
       .then(response => response.json())
       .then(data => {
