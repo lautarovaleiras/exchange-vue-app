@@ -6,20 +6,24 @@
           <div class="card-header">Currency convertion</div>
           <div class="card-body">
             <b-form @submit.prevent="submitForm">
-              <b-form-group>
+              <b-input-group prepend="From">
                 <b-form-select  v-model="selectedFrom" :options="options" required>
                 </b-form-select>
-              </b-form-group>
-
-              <b-form-group>
-                <b-form-select  v-model="selectedTo"  :options="options" required>
+              </b-input-group>
+              <br>
+              <b-input-group prepend="To">
+                <b-form-select  v-model="selectedTo" :options="options" required>
                 </b-form-select>
-              </b-form-group>
+              </b-input-group>
+              <br>
 
-              <b-form-group>
-                <b-form-input v-model="amountValue" placeholder="$ 0.00" type="number" required></b-form-input>
-              </b-form-group>
-
+              <b-input-group prepend="$">
+                <b-form-input v-model="amountValue" placeholder="0.00" type="text"  :state="amountState" aria-describedby="input-live-feedback" required></b-form-input>
+                <b-form-invalid-feedback id="input-live-feedback">
+                  Invalid amount
+                </b-form-invalid-feedback>
+              </b-input-group>
+              <br>
               <b-button type="submit" variant="primary">Convert</b-button>
             </b-form>
           </div>
@@ -35,10 +39,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+
 export default {
   name: 'AppExchange',
-  computed: { ...mapGetters(['isAuthenticated', 'getToken']) },
-
+  computed: {
+    ...mapGetters(['isAuthenticated', 'getToken']),
+    amountState () {
+      const regex = /[^0-9.]/g // Removed unnecessary quotes around the regex pattern
+      const isValid = !regex.test(this.amountValue) // Changed "event" to "this.event" and inverted the result
+      return isValid
+    }
+  },
   props: {
     msg: String
   },
@@ -46,7 +57,7 @@ export default {
     return {
       amountValue: null,
       selectedFrom: null,
-      selectedTo: null,
+      selectedTo: 'USD',
       options: [],
       amountConverted: null
     }
@@ -88,6 +99,12 @@ export default {
         // Handle Error
         console.error(error)
       })
+  },
+  watch: {
+    amountValue (newVal) {
+      // Watch for changes in amountValue and trigger a re-render
+      this.amountValue = newVal// Update amountValue with only numeric and decimal characters
+    }
   }
 }
 </script>
