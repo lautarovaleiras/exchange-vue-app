@@ -94,9 +94,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.getToken)
-    console.log(this.isAuthenticated)
-
     axios.get('http://localhost:3000/exchange/currencies')
       .then(res => {
         this.options = res.data?.map(c => {
