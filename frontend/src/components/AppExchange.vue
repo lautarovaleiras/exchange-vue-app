@@ -5,7 +5,9 @@
         <div class="card">
           <div class="card-header">Currency convertion</div>
           <div class="card-body">
-            <b-form @submit.prevent="submitForm">
+
+            <app-spinner v-if="mounting"></app-spinner>
+            <b-form @submit.prevent="submitForm" v-show="!mounting">
               <b-input-group prepend="From">
                 <b-form-select  v-model="selectedFrom" :options="options" required>
                 </b-form-select>
@@ -50,9 +52,11 @@
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import { isEmpty } from 'lodash'
+import AppSpinner from './AppSpinner.vue'
 
 export default {
   name: 'AppExchange',
+  components: { AppSpinner },
   computed: {
     ...mapGetters(['isAuthenticated', 'getToken']),
     amountState () {
@@ -72,6 +76,7 @@ export default {
       options: [],
       amountConverted: null,
       isLoading: false,
+      mounting: true,
       badRequest: null
     }
   },
@@ -104,6 +109,7 @@ export default {
     }
   },
   mounted () {
+    this.mounting = true
     axios.get(`${process.env.VUE_APP_API_URL}/exchange/currencies`)
       .then(res => {
         this.options = res.data?.map(c => {
@@ -115,6 +121,8 @@ export default {
       }).catch(error => {
         // Handle Error
         console.error(error)
+      }).finally(() => {
+        this.mounting = false
       })
   },
   watch: {
