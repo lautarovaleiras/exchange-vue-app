@@ -14,8 +14,8 @@ const app = express();
 // middlewares
 // Allow requests from http://localhost:8080
 const corsOptions = {
-    origin: 'http://localhost:8080',
-  };
+  origin: '*',
+};
 app.use(cors(corsOptions));
 app.use(morgan(env));
 
