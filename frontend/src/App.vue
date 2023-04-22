@@ -1,16 +1,13 @@
 <template>
   <div class="wrapper">
     <header class="header">
-      <!-- Header content goes here -->
-      <app-header></app-header> <!-- Replace with your header component -->
+      <app-header></app-header>
     </header>
     <main class="main">
-      <!-- Main content goes here -->
-      <router-view></router-view> <!-- Replace with your main component or router-view -->
+      <router-view></router-view>
     </main>
     <footer class="footer">
-      <!-- Footer content goes here -->
-      <app-footer></app-footer> <!-- Replace with your footer component -->
+      <app-footer></app-footer>
     </footer>
   </div>
 </template>
