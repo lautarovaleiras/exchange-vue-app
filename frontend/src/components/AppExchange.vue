@@ -35,6 +35,10 @@
             <p class="mb-0">Result:</p>
             <h4 class="mb-0">{{ amountConverted }}</h4>
           </div>
+
+          <div v-show="badRequest != null" class="card-footer bg-light">
+            <h4 class="mb-0">{{ badRequest }}</h4>
+          </div>
         </div>
 
       </div>
@@ -52,9 +56,9 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'getToken']),
     amountState () {
-      const regex = /[^0-9.]/g // Removed unnecessary quotes around the regex pattern
+      const regex = /[^0-9.]/g
       const isValid = !regex.test(this.amountValue)
-      return isValid && !isEmpty(this.amountValue)
+      return isValid && !isEmpty(this.amountValue) && this.amountValue > 0 && this.amountValue.length < 14 // max 14 for avoid big numbers
     },
     isFormValid () {
       return this.amountState && this.selectedFrom && this.selectedTo
@@ -67,7 +71,8 @@ export default {
       selectedTo: 'USD',
       options: [],
       amountConverted: null,
-      isLoading: false
+      isLoading: false,
+      badRequest: null
     }
   },
   methods: {
@@ -83,6 +88,11 @@ export default {
         const amount = response.data?.amountConverted
         this.amountConverted = amount ? amount.toFixed(3) : 'Sin datos'
       } catch (error) {
+        if (error?.response?.status === 400) {
+          console.info(error.response.data.message)
+
+          this.badRequest = error.response.data.message
+        }
         console.error(error)
       } finally {
         this.isLoading = false

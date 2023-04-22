@@ -7,8 +7,10 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item href="https://github.com/lautarovaleiras/exchange-vue-app">Github source code</b-nav-item>
+
+        <b-nav-item @click="redirectTo('/')">Home</b-nav-item>
         <b-nav-item @click="redirectTo('/about')">Doc</b-nav-item>
+        <b-nav-item href="https://github.com/lautarovaleiras/exchange-vue-app">Github source code</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

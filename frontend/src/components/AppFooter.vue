@@ -1,8 +1,6 @@
 <template>
  <footer>
-    <!-- <span class="footer-item center">@Lautaro Valeiras</span> -->
     <b-link class="footer-item center" href="https://github.com/lautarovaleiras">@Lautaro Valeiras</b-link>
-
   </footer>
 </template>
 <script>
