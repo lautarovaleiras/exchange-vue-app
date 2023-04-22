@@ -29,6 +29,9 @@ export class ExchangeController {
             return res.status(400).json({ message: validData.error });
         }
         
+        if(body.amount <= 0){
+            return res.status(400).json({ message: "El monto debe ser mayor a 0" });
+        }
         
         // Calculo cuanto vale la moneda que quiero comprar con la cuenta que quiero comprar
         let currencyValue = await Utils.convertAmount(body.from,body.to)
