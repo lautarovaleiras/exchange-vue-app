@@ -93,3 +93,10 @@ Setear la variable de entorno VUE_APP_API_URL=http://localhost:3000 creando el a
 
 ### No-Gos
 * Nos estan implementada la sesion con localStorage por lo que cualquier refresh causa la perdia de la misma.
+
+## Prod deployment
+El frontend fue deployado en vercel meintras que el backend en render, ambos en sus capas gratuitas.
+
+`APP URL: https://exchange-vue-app.vercel.app/`
+
+`Backend URL: https://backend-vue-service.onrender.com`
