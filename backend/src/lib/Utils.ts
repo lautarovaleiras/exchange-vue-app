@@ -34,19 +34,37 @@ export class Utils {
     }
     /**
      * Cuenta free retorna por defualt la moneda en base a Euros
-     *  Tiene un limite de 500 request por mes.
+     *  Tiene un limite de 100 request por mes.
      */
     static async getRatesFromFixer(): Promise<any>{
        
         return new Promise((resolve, reject) => {
-            // Cuentra Free (500 request x mes)
+            // Cuentra Free (100 request x mes)
+            // {
+            //     "success": false,
+            //     "error": {
+            //       "code": 104,
+            //       "info": "Your monthly API request volume has been reached. Please upgrade your plan."
+            //     }
+            // }
             let access_key = 'bb9fd8773b95d9922c032d06e85a781e'
             axios
                 .get(
                     `http://data.fixer.io/api/latest?access_key=${access_key}`)
                     .then(function (res) {
-                        if (res.status == 200) 
+                        if (res.status == 200){
+                            if(res.data.success === false){
+                                const error = res.data.error
+                                switch (error.code) {
+                                    case 104:
+                                        throw new Error(error.info);
+                                    default:
+                                        console.log(error)
+                                        throw new Error('Fixer error, go to logs');
+                                }
+                            }
                             resolve(res.data);
+                        } 
                         else
                             throw new Error('Error getting tokens');
                     })
